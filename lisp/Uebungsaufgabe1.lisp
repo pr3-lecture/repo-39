@@ -1,4 +1,5 @@
 ;gnu clisp 2.49
+;@author: Stella Neser
 
 (print "Lisp, Uebungsblatt 1!")
 
@@ -6,7 +7,7 @@
 
 ;Aufgabe 1
 ;a)
-(defun rotieren (x) 
+(defun rotieren (x)
     "setze das erste element ans ende"
     (append (rest x) (list (first x)))
     )
@@ -29,7 +30,7 @@
 
 (defun my-length (a)
     "Laenge einer list inklusive der geschachtelten listen"
-    (cond ((null a) 0) 
+    (cond ((null a) 0)
         (t (+ 1 (my-length(rest a))))))
 
 ;d)
@@ -61,9 +62,9 @@
 ;Aufgabe2
 ;a)
 ;B-Baeume sind oft verwendete unterarten von Baeumen. Die Knoten eines B-Baumes
-;koennen nur max 2 Nachkommen (elemente) haben. Er besteht jewehls aus 3 
+;koennen nur max 2 Nachkommen (elemente) haben. Er besteht jewehls aus 3
 ;Elementen; Vater, linkes Kind, rechtes Kind. Jedes Kind kann auch ein Vater
-;sein => Aufbau wird rekursiv fortgefuehrt. Man kann jedes element als Liste 
+;sein => Aufbau wird rekursiv fortgefuehrt. Man kann jedes element als Liste
 ;darstellen => Listern werden ineinander verzweigt, wie in einem Baum
 
 ;b)
@@ -75,7 +76,7 @@
         ((listp (car tree)) (preorder (car tree)) (preorder (cdr tree)))
         (t (princ (car tree)) (princ " ") (preorder (cdr tree)))
     )
-)    
+)
 
 ;b.2) inorder (tree)
 (defun inorder (tree)
