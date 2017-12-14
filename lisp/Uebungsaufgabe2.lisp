@@ -48,8 +48,15 @@
 
 ;helper, create tree from list
 (defun newTree (elements)
-  (let (tree '()))
+  (let (tree))
   (dolist (e elements) (setf tree1 (insert tree1 e)))
+  )
+
+(defun newTree2 (elements)
+  (setq tree '())
+    (dolist (e elements) (setf tree (insert tree e))
+    )
+    tree
   )
 
 (defun contains (tree val)
@@ -66,12 +73,6 @@
    )
   )
 
-(defun removeVal (tree val)
-   (if (contains tree val)
-      (print "value is there"))
-  )
-
-;helper: flatten list
 (defun flatten (l)
   (cond ((null l) nil)
         ((atom l) (list l))
@@ -80,6 +81,38 @@
 (defun getMin (tree)
     (apply #'min (flatten tree))
   )
+
+;working only with nodes at the moment
+(defun doRemoveVal (tree val)
+  (setq temp tree)
+  (print "Removing")
+        (cond
+          (
+           (< val (currentVal tree)) 
+           (remove (right ) tree)
+           (doRemoveVal (left tree) val)
+          )
+          (
+           (> val (currentVal tree)) 
+           (print "larger")
+           (doRemoveVal (right tree) val)
+           )
+          ( 
+            (= val (currentVal tree)) 
+            (print "found")
+           (setf (car tree) (getMin (right tree))) 
+           (setf (cadr tree) nil)
+           (setf (caddr tree) nil)
+           )
+     )
+  (print tree)
+  )
+
+(defun removeVal (tree val)
+  (if (contains tree val)
+    (doRemoveVal tree val)
+  ))
+
 
 (defun getMax (tree)
     (apply #'max (flatten tree))
@@ -93,14 +126,14 @@
   )
 
 ;TODO
-(defun readFile (filename)
-    (with-open-file (in filename :direction :input)
-      (loop for line = (read-line in nil)
-      :while line
-      :collect (mapcar #'parse-integer (split line))
-        )
-      )
-  )
+;(defun readFile (filename)
+;    (with-open-file (in filename :direction :input)
+;      (loop for line = (read-line in nil)
+;      :while line
+;      :collect (mapcar #'parse-integer (split line))
+;        )
+;      )
+;  )
 
 ;helper: convert lines to list
 
@@ -113,6 +146,10 @@
      )
   )
 
+(defun levelOrderHelper (l1 l2)
+  (flatten (map-into l1 #'list l1 l2))
+)
+
 (defun printLevelOrder (tree)
     ( print  
       (append (list (car tree))
@@ -124,9 +161,6 @@
     )
 )
 
-(defun levelOrderHelper (l1 l2)
-  (flatten (map-into l1 #'list l1 l2))
-)
 
 ;(print "testing Helpers")
 
@@ -136,14 +170,14 @@
 
 (print "adding elements")
 (setq l (list 23 12 1 4 5 28 4 9 10 45 89))
-(setq l2 (list 123 212 31 44 55 628 74 89 910 345 589))
+;(setq l2 (list 123 212 31 44 55 628 74 89 910 345 589))
 (print l)
 (print l2)
 
 
-;(print "create tree")
-(newTree l)
-;(newTree l2)
+(print "create tree")
+;(newTree l)
+(setq tree1 (newTree2 l))
 
 (print "show tree")
 (print tree1)
@@ -164,7 +198,12 @@
 (print "contains 145; expected t")
 (print (contains tree1 145))
 
-(removeVal tree1 145)
+(print "removing 28")
+(removeVal tree1 28)
+(print tree1)
+
+(print "contains 28; expected nil")
+(print (contains tree1 28))
 
 (print "getMin; expected 1")
 (print (getMin tree1))
