@@ -85,7 +85,7 @@
 ;working only with nodes at the moment
 (defun doRemoveVal (tree val)
   (setq temp tree)
-  (print "Removing")
+  ;(print "Removing")
         (cond
           (
            (< val (currentVal tree)) 
@@ -94,12 +94,12 @@
           )
           (
            (> val (currentVal tree)) 
-           (print "larger")
+           ;(print "larger")
            (doRemoveVal (right tree) val)
            )
           ( 
             (= val (currentVal tree)) 
-            (print "found")
+           ; (print "found")
            (setf (car tree) (getMin (right tree))) 
            (setf (cadr tree) nil)
            (setf (caddr tree) nil)
@@ -135,7 +135,44 @@
 ;      )
 ;  )
 
-;helper: convert lines to list
+(defun readFileHelper(filename)
+    (with-open-file (in filename)
+      (loop for line = (read-line in nil nil)
+            while line
+            ;collect (map 'list #'digit-char-p line)
+            collect (parse-string-to-int line)
+       )
+      )
+    )
+
+(defun parse-string-to-int (line)
+  (with-input-from-string (s line)
+    (loop
+      :for num := (read s nil nil)
+      :while num
+      :collect num
+      )
+    )
+  )
+
+;needs to be flattend, because with-open-file generates list of lists
+(defun readFile(filename)
+    (remove nil (flatten (readFileHelper filename)))
+    )
+
+(defun insertFromFile (tree filename)
+  (let (fileTree) (readFile filename)
+    (print "read file")
+    (print "temp tree is:")
+    (print (readFile filename))
+    (print "my tree is")
+    (print tree)
+    (newTree (readFile filename))
+    
+    ;(dolist (val (readFile filename) ) (print val) (newTree cetree val))
+    ;)
+    )
+  )
 
 (defun size (tree)
     (cond
@@ -224,3 +261,10 @@
 
 (print "isEmpty '(); expected t")
 (print (isEmpty '()))
+
+(print "test, read from file")
+(print (readFile "test"))
+
+(print "testing inserting from file")
+(insertFromFile tree1 "test")
+(print tree1)
